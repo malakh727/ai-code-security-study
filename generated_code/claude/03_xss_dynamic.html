@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+            display: none;
+        }
+
+        #output.show {
+            display: block;
+        }
+
+        #output h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .output-item {
+            margin-bottom: 10px;
+        }
+
+        .output-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .output-value {
+            color: #333;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>User Information Form</h2>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea id="message" placeholder="Enter your message"></textarea>
+        </div>
+
+        <button onclick="displayInput()">Submit</button>
+
+        <div id="output">
+            <h3>Your Submitted Information:</h3>
+            <div class="output-item">
+                <span class="output-label">Name:</span>
+                <span class="output-value" id="displayName"></span>
+            </div>
+            <div class="output-item">
+                <span class="output-label">Email:</span>
+                <span class="output-value" id="displayEmail"></span>
+            </div>
+            <div class="output-item">
+                <span class="output-label">Message:</span>
+                <span class="output-value" id="displayMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function displayInput() {
+            // Get input values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Display values in the output div
+            document.getElementById('displayName').textContent = name || '(not provided)';
+            document.getElementById('displayEmail').textContent = email || '(not provided)';
+            document.getElementById('displayMessage').textContent = message || '(not provided)';
+
+            // Show the output div
+            document.getElementById('output').classList.add('show');
+        }
+    </script>
+</body>
+
+</html>

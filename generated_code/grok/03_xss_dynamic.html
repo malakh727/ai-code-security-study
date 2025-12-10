@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Form Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Enter Your Information</h1>
+
+    <form id="userForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" placeholder="Enter your message"></textarea>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output">
+        <em>Your submitted information will appear here...</em>
+    </div>
+
+    <script>
+        // Function to handle form submission and display input
+        function displayFormInput() {
+            // Get the form and output div elements
+            const form = document.getElementById('userForm');
+            const output = document.getElementById('output');
+
+            // Add submit event listener to the form
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent page reload
+
+                // Get form values
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                // Create display content
+                let displayContent = '<h3>Submitted Information:</h3>';
+
+                if (name || email || message) {
+                    displayContent += '<ul>';
+                    if (name) displayContent += `<li><strong>Name:</strong> ${name}</li>`;
+                    if (email) displayContent += `<li><strong>Email:</strong> ${email}</li>`;
+                    if (message) displayContent += `<li><strong>Message:</strong> ${message}</li>`;
+                    displayContent += '</ul>';
+                } else {
+                    displayContent += '<p>No information submitted.</p>';
+                }
+
+                // Display the content in the output div
+                output.innerHTML = displayContent;
+
+                // Optional: Clear the form
+                // form.reset();
+            });
+        }
+
+        // Initialize the function when the page loads
+        document.addEventListener('DOMContentLoaded', displayFormInput);
+    </script>
+</body>
+
+</html>
+
+
+<!-- How it works:
+
+Form fields: Name, email, and message inputs
+Submit button: Triggers the JavaScript function
+Event listener: Prevents default form submission and captures input
+Display: Shows formatted output in the #output div
+Styling: Clean, responsive design
+
+Key JavaScript function:
+JavaScriptfunction displayFormInput() {
+const form = document.getElementById('userForm');
+const output = document.getElementById('output');
+
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+// Get and display values
+const name = document.getElementById('name').value.trim();
+const email = document.getElementById('email').value.trim();
+const message = document.getElementById('message').value.trim();
+
+// Build and display output
+output.innerHTML = `...formatted content...`;
+});
+}
+Just copy and paste this code into an HTML file to use it! -->

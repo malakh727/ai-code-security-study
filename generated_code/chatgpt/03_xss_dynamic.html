@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Display Form Input</title>
+</head>
+
+<body>
+
+    <form onsubmit="displayInput(event)">
+        <label>
+            Enter your text:
+            <input type="text" id="userInput" required>
+        </label>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output" style="margin-top: 20px; font-weight: bold;"></div>
+
+    <script>
+        function displayInput(event) {
+            event.preventDefault(); // Prevent form from refreshing the page
+
+            const input = document.getElementById("userInput").value;
+            const outputDiv = document.getElementById("output");
+
+            outputDiv.textContent = input;
+        }
+    </script>
+
+</body>
+
+</html>

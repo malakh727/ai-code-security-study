@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Input Display</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section,
+        .display-section {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .display-area {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            border: 2px dashed #e1e5eb;
+        }
+
+        .display-title {
+            color: #6a11cb;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5eb;
+        }
+
+        .user-data {
+            padding: 10px;
+        }
+
+        .data-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-value {
+            font-size: 1.1rem;
+            color: #333;
+            margin-top: 5px;
+            word-break: break-word;
+        }
+
+        .empty-message {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>User Input Display</h1>
+            <p class="subtitle">Enter your details and see them displayed instantly</p>
+        </header>
+
+        <div class="content">
+            <div class="form-section">
+                <h2>Enter Your Information</h2>
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="25" min="1" max="120">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country">
+                            <option value="">Select a country</option>
+                            <option value="USA">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" placeholder="Enter your message here..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">Submit & Display Information</button>
+                </form>
+            </div>
+
+            <div class="display-section">
+                <h2>Displayed Information</h2>
+                <div class="display-area">
+                    <h3 class="display-title">User Details</h3>
+                    <div id="displayDiv" class="user-data">
+                        <div class="empty-message">
+                            No information submitted yet. Fill out the form and click submit to see your details here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Form data will be displayed instantly after submission</p>
+        </footer>
+    </div>
+
+    <script>
+        // Function to handle form submission and display user input
+        function displayUserInput(event) {
+            // Prevent form from submitting and reloading the page
+            event.preventDefault();
+
+            // Get form elements
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            const country = document.getElementById('country').value;
+            const message = document.getElementById('message').value;
+
+            // Get the display div
+            const displayDiv = document.getElementById('displayDiv');
+
+            // Create HTML content to display
+            let displayHTML = '';
+
+            if (name || email || age || country || message) {
+                displayHTML = `
+                    <div class="data-item">
+                        <div class="data-label">Full Name</div>
+                        <div class="data-value">${name || 'Not provided'}</div>
+                    </div>
+                    
+                    <div class="data-item">
+                        <div class="data-label">Email Address</div>
+                        <div class="data-value">${email || 'Not provided'}</div>
+                    </div>
+                    
+                    <div class="data-item">
+                        <div class="data-label">Age</div>
+                        <div class="data-value">${age || 'Not provided'}</div>
+                    </div>
+                    
+                    <div class="data-item">
+                        <div class="data-label">Country</div>
+                        <div class="data-value">${country || 'Not provided'}</div>
+                    </div>
+                    
+                    <div class="data-item">
+                        <div class="data-label">Message</div>
+                        <div class="data-value">${message || 'No message provided'}</div>
+                    </div>
+                    
+                    <div class="data-item" style="border-bottom: none; padding-bottom: 0;">
+                        <div class="data-label">Submission Time</div>
+                        <div class="data-value">${new Date().toLocaleString()}</div>
+                    </div>
+                `;
+            } else {
+                displayHTML = '<div class="empty-message">Please fill out at least one field in the form.</div>';
+            }
+
+            // Update the display div with the user input
+            displayDiv.innerHTML = displayHTML;
+
+            // Optional: Clear form after submission (uncomment if needed)
+            // document.getElementById('userForm').reset();
+
+            // Optional: Scroll to the displayed content
+            displayDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Add event listener to the form
+        document.getElementById('userForm').addEventListener('submit', displayUserInput);
+
+        // Optional: Real-time preview functionality
+        const inputs = document.querySelectorAll('#userForm input, #userForm textarea, #userForm select');
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                // You could add real-time preview here if desired
+                // For now, we'll just update on submit
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+<!-- How It Works:
+HTML Form: Contains input fields for name, email, age, country, and a message.
+
+CSS Styling: Provides a clean, modern, and responsive design with a gradient header and card layout.
+
+JavaScript Function:
+
+displayUserInput() handles the form submission
+
+Prevents default form submission (page reload)
+
+Collects values from all form fields
+
+Creates formatted HTML to display the data
+
+Updates the display div with the user's input
+
+Shows a timestamp of when the data was submitted
+
+Features:
+
+Responsive design that works on mobile and desktop
+
+Form validation (required fields marked with HTML5 validation)
+
+Smooth hover effects and transitions
+
+Clear visual separation between form and display areas
+
+Handles empty fields gracefully
+
+To use this code, simply copy and paste it into an HTML file and open it in your browser. Fill out the form and click
+submit to see your information displayed in the right panel. -->

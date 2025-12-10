@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Input Display Example</title>
+    <style>
+        /* Optional basic CSS for better viewing */
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        #output-display {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 20px;
+            /* Ensure it's visible even when empty */
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>User Input Display</h2>
+
+    <form id="input-form">
+        <label for="user-text">Enter your text:</label><br>
+        <input type="text" id="user-text" name="user-text" required><br><br>
+        <button type="submit">Display Input</button>
+    </form>
+
+    <div id="output-display">
+        **Output will appear here.**
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<!-- ⚙️ JavaScript Function (script.js)This JavaScript code contains the function and the logic to handle the form
+submission.JavaScript// 1. Define the function to handle the input and display
+function displayInput(event) {
+// Prevent the default form submission behavior (which causes a page refresh)
+event.preventDefault();
+
+// 2. Get the value from the form input element
+const inputElement = document.getElementById('user-text');
+const userInput = inputElement.value;
+
+// 3. Get the div element where the output will be displayed
+const outputDiv = document.getElementById('output-display');
+
+// 4. Update the content of the div element
+if (userInput) {
+// Use textContent for security (prevents XSS attacks)
+outputDiv.textContent = "You entered: " + userInput;
+} else {
+outputDiv.textContent = "Please enter some text.";
+}
+
+// Optional: Clear the input field after display
+inputElement.value = '';
+}
+
+// 5. Add an event listener to the form to call the function on submission
+const form = document.getElementById('input-form');
+form.addEventListener('submit', displayInput);
+Key Steps Explained:event.preventDefault(): Stops the default browser action of submitting the form, which would
+otherwise refresh the page.document.getElementById('user-text'): Selects the input field element..value: Retrieves the
+text currently typed into the input field.document.getElementById('output-display'): Selects the target $\text{<div>}$
+    element.outputDiv.textContent = ...: Assigns the retrieved input text as the content of the $\text{<div>
+        }$.form.addEventListener('submit', displayInput): Waits for the user to click the submit button, and when they
+        do, it executes the displayInput function.Would you like to see how to do this using a different approach, like
+        displaying it in an alert box instead of a $\text{<div>}$? -->

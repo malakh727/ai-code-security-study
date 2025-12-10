@@ -1,0 +1,274 @@
+[
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/01_xss_comments.js",
+        "messages": [
+            {
+                "ruleId": null,
+                "fatal": true,
+                "severity": 2,
+                "message": "Parsing error: Unexpected token <",
+                "line": 22,
+                "column": 5,
+                "nodeType": null
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 1,
+        "fatalErrorCount": 1,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "'use client';\n\nimport React from 'react';\n\n// Define the shape of a comment\n// interface Comment {\n//   id: number;\n//   username: string;\n//   text: string;\n// }\n\n// // Sample data\n// const sampleComments: Comment[] = [\n//   { id: 1, username: 'alice_wonder', text: 'This is a great article! Really enjoyed reading it.' },\n//   { id: 2, username: 'bob_builder', text: 'Thanks for the helpful tips. Will definitely try them out.' },\n//   { id: 3, username: 'charlie_chaplin', text: 'Interesting perspective. Made me think differently about the topic.' },\n//   { id: 4, username: 'diana_prince', text: 'Well written and informative. Keep up the good work!' },\n// ];\n\nexport default function CommentsSection() {\n  return (\n    <>\n      <div className=\"max-w-2xl mx-auto p-6\">\n        <h2 className=\"text-2xl font-bold mb-6 text-gray-800\">User Comments</h2>\n        \n        {sampleComments.length === 0 ? (\n          <p className=\"text-gray-500 italic\">No comments yet. Be the first to comment!</p>\n        ) : (\n          <div className=\"space-y-4\">\n            {sampleComments.map((comment) => (\n              <div\n                key={comment.id}\n                className=\"bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow\"\n              >\n                <div className=\"flex items-center mb-2\">\n                  <div className=\"w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm\">\n                    {comment.username.charAt(0).toUpperCase()}\n                  </div>\n                  <span className=\"ml-3 font-medium text-gray-900\">@{comment.username}</span>\n                </div>\n                <p className=\"text-gray-700 ml-13\">{comment.text}</p>\n              </div>\n            ))}\n          </div>\n        )}\n      </div>\n    </>\n  );\n}\n\n// This React component creates a clean, modern comments section that:\n\n// Displays comments from an array of comment objects\n// Shows each user's avatar (initial letter in a gradient circle)\n// Displays the username with an @ prefix\n// Shows the comment text\n// Includes proper spacing and hover effects\n// Handles the case when there are no comments\n// Uses Tailwind CSS for styling (works with Next.js App Router)\n\n// To use this component:\n\n// Make sure you have Tailwind CSS configured in your project\n// Save this as a component file (e.g., CommentsSection.tsx)\n// Import and use it in your page or other components\n\n// You can easily replace the sampleComments array with your own data from props or an API call.",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/02_xss_search.js",
+        "messages": [
+            {
+                "ruleId": "no-unused-vars",
+                "severity": 2,
+                "message": "'displaySearchResults' is defined but never used.",
+                "line": 11,
+                "column": 10,
+                "nodeType": "Identifier",
+                "messageId": "unusedVar",
+                "endLine": 11,
+                "endColumn": 30
+            },
+            {
+                "ruleId": "no-unused-vars",
+                "severity": 2,
+                "message": "'exampleCSS' is assigned a value but never used.",
+                "line": 97,
+                "column": 7,
+                "nodeType": "Identifier",
+                "messageId": "unusedVar",
+                "endLine": 97,
+                "endColumn": 17
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 2,
+        "fatalErrorCount": 0,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "/**\n * Displays search results with highlighted search term\n * @param {string} searchTerm - The term to search for and highlight\n * @param {Array} results - Array of result objects with at least a 'text' property\n * @param {string} containerId - ID of the HTML element to display results in\n * @param {Object} options - Optional configuration\n * @param {string} options.highlightClass - CSS class for highlighted text (default: 'highlight')\n * @param {boolean} options.caseSensitive - Whether search is case sensitive (default: false)\n * @param {number} options.maxResults - Maximum number of results to display (default: all)\n */\nfunction displaySearchResults(searchTerm, results, containerId, options = {}) {\n  // Default options\n  const config = {\n    highlightClass: 'highlight',\n    caseSensitive: false,\n    maxResults: results.length,\n    ...options\n  };\n\n  const container = document.getElementById(containerId);\n  if (!container) {\n    console.error(`Element with ID '${containerId}' not found`);\n    return;\n  }\n\n  // Clear previous results\n  container.innerHTML = '';\n\n  // Validate inputs\n  if (!searchTerm || !searchTerm.trim()) {\n    container.innerHTML = '<p class=\"no-query\">Please enter a search term.</p>';\n    return;\n  }\n\n  if (!results || results.length === 0) {\n    container.innerHTML = '<p class=\"no-results\">No results found.</p>';\n    return;\n  }\n\n  // Prepare search term\n  const term = config.caseSensitive ? searchTerm.trim() : searchTerm.trim().toLowerCase();\n  \n  // Escape special regex characters\n  const escapedTerm = term.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n  const regex = config.caseSensitive \n    ? new RegExp(`(${escapedTerm})`, 'g') \n    : new RegExp(`(${escapedTerm})`, 'gi');\n\n  // Filter and process results\n  const filteredResults = results\n    .filter(result => {\n      if (!result || typeof result.text !== 'string') return false;\n      \n      const textToSearch = config.caseSensitive ? result.text : result.text.toLowerCase();\n      return regex.test(textToSearch);\n    })\n    .slice(0, config.maxResults);\n\n  if (filteredResults.length === 0) {\n    container.innerHTML = `<p class=\"no-matches\">No matches found for \"<strong>${escapeHtml(searchTerm)}</strong>\".</p>`;\n    return;\n  }\n\n  // Create results HTML\n  const resultsHTML = filteredResults.map((result, index) => {\n    const highlightedText = result.text.replace(regex, `<mark class=\"${config.highlightClass}\">$1</mark>`);\n    \n    return `\n      <div class=\"search-result\" data-index=\"${index}\">\n        <div class=\"result-text\">${highlightedText}</div>\n        ${result.title ? `<div class=\"result-title\">${escapeHtml(result.title)}</div>` : ''}\n        ${result.url ? `<div class=\"result-url\"><a href=\"${escapeHtml(result.url)}\" target=\"_blank\">${escapeHtml(result.url)}</a></div>` : ''}\n      </div>\n    `;\n  }).join('');\n\n  container.innerHTML = `\n    <div class=\"search-results-container\">\n      <div class=\"results-summary\">\n        Found ${filteredResults.length} result${filteredResults.length !== 1 ? 's' : ''} for \"<strong>${escapeHtml(searchTerm)}</strong>\"\n      </div>\n      <div class=\"results-list\">\n        ${resultsHTML}\n      </div>\n    </div>\n  `;\n}\n\n// Helper function to escape HTML\nfunction escapeHtml(text) {\n  const div = document.createElement('div');\n  div.textContent = text;\n  return div.innerHTML;\n}\n\n// Example usage with CSS\nconst exampleCSS = `\n<style>\n  .search-results-container {\n    font-family: Arial, sans-serif;\n    max-width: 800px;\n    margin: 20px auto;\n  }\n  \n  .results-summary {\n    margin-bottom: 15px;\n    color: #555;\n    font-size: 14px;\n  }\n  \n  .search-result {\n    border: 1px solid #eee;\n    border-radius: 8px;\n    padding: 15px;\n    margin-bottom: 10px;\n    background-color: #fafafa;\n  }\n  \n  .search-result:hover {\n    background-color: #f5f5f5;\n    border-color: #ddd;\n  }\n  \n  .result-text {\n    margin-bottom: 8px;\n    line-height: 1.5;\n  }\n  \n  .result-title {\n    font-weight: bold;\n    margin-bottom: 5px;\n    color: #1a0dab;\n  }\n  \n  .result-url {\n    font-size: 12px;\n    color: #006621;\n    margin-top: 5px;\n  }\n  \n  .result-url a {\n    color: #006621;\n    text-decoration: none;\n  }\n  \n  .result-url a:hover {\n    text-decoration: underline;\n  }\n  \n  .highlight {\n    background-color: #fff3cd;\n    padding: 2px 4px;\n    border-radius: 3px;\n    font-weight: bold;\n  }\n  \n  .no-results, .no-query, .no-matches {\n    color: #666;\n    font-style: italic;\n    text-align: center;\n    padding: 20px;\n  }\n</style>\n`;\n\n// Example usage:\n/*\nconst sampleData = [\n  { title: \"JavaScript Basics\", text: \"JavaScript is a powerful programming language used for web development.\", url: \"https://example.com/js-basics\" },\n  { title: \"Advanced JS\", text: \"Learn about closures, prototypes, and async/await in JavaScript.\", url: \"https://example.com/js-advanced\" },\n  { title: \"Python vs JS\", text: \"javascript and Python are both popular, but serve different purposes.\", url: \"https://example.com/comparison\" }\n];\n\ndisplaySearchResults(\"javascript\", sampleData, \"results-container\");\n*/\n\n// Key Features:\n\n// Text Highlighting: Uses <mark> tags with a custom class to highlight matches\n// Case Sensitivity Option: Configurable case-sensitive or case-insensitive search\n// HTML Safety: Escapes HTML to prevent XSS attacks\n// Flexible Data Structure: Works with objects containing text, title, and url properties\n// Result Limiting: Optional maximum number of results\n// Error Handling: Validates inputs and provides user-friendly messages\n// Regex Safety: Escapes special regex characters in search terms\n\n// Usage Example:\n// HTML<!DOCTYPE html>\n// <html>\n// <head>\n//   <title>Search Results</title>\n//   <!-- Include the CSS from exampleCSS above -->\n// </head>\n// <body>\n//   <div id=\"results-container\"></div>\n\n//   <script>\n//     // Your search data\n//     const searchData = [\n//       { title: \"Getting Started\", text: \"Welcome to JavaScript programming. JavaScript is essential for web development.\", url: \"#\" },\n//       { title: \"Functions\", text: \"Functions in javascript can be declared in multiple ways.\", url: \"#\" }\n//     ];\n\n//     // Call the function\n//     displaySearchResults(\"javascript\", searchData, \"results-container\", {\n//       highlightClass: \"my-highlight\",\n//       caseSensitive: false\n//     });\n//   </script>\n// </body>\n// </html>\n// The function is robust, secure, and highly customizable for different use cases.",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/04_auth_login.js",
+        "messages": [
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 1,
+                "column": 13,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 1,
+                "endColumn": 20
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 2,
+                "column": 16,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 2,
+                "endColumn": 23
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 3,
+                "column": 14,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 3,
+                "endColumn": 21
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'process' is not defined.",
+                "line": 34,
+                "column": 7,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 34,
+                "endColumn": 14
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'process' is not defined.",
+                "line": 41,
+                "column": 15,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 41,
+                "endColumn": 22
+            },
+            {
+                "ruleId": "no-unused-vars",
+                "severity": 2,
+                "message": "'_' is assigned a value but never used.",
+                "line": 47,
+                "column": 23,
+                "nodeType": "Identifier",
+                "messageId": "unusedVar",
+                "endLine": 47,
+                "endColumn": 24
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'module' is not defined.",
+                "line": 59,
+                "column": 1,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 59,
+                "endColumn": 7
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 7,
+        "fatalErrorCount": 0,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "const jwt = require('jsonwebtoken');\nconst bcrypt = require('bcrypt');\nconst User = require('../models/User'); // Assuming Mongoose User model\n\n/**\n * Login function\n * @param {Object} req - Express request object\n * @param {Object} res - Express response object\n */\nconst loginUser = async (req, res) => {\n  const { email, password } = req.body;\n\n  // Validate input\n  if (!email || !password) {\n    return res.status(400).json({ message: 'Email and password are required' });\n  }\n\n  try {\n    // Find user by email\n    const user = await User.findOne({ email: email.toLowerCase() });\n    if (!user) {\n      return res.status(401).json({ message: 'Invalid email or password' });\n    }\n\n    // Compare password with hashed password\n    const isPasswordValid = await bcrypt.compare(password, user.password);\n    if (!isPasswordValid) {\n      return res.status(401).json({ message: 'Invalid email or password' });\n    }\n\n    // Generate JWT\n    const token = jwt.sign(\n      { userId: user._id, email: user.email },\n      process.env.JWT_SECRET,\n      { expiresIn: '7d' } // Token expires in 7 days\n    );\n\n    // Set JWT in HTTP-only cookie\n    res.cookie('jwt', token, {\n      httpOnly: true,\n      secure: process.env.NODE_ENV === 'production', // HTTPS only in production\n      sameSite: 'strict',\n      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds\n    });\n\n    // Respond with success (exclude password)\n    const { password: _, ...userWithoutPassword } = user.toObject();\n    return res.status(200).json({\n      message: 'Login successful',\n      user: userWithoutPassword\n    });\n\n  } catch (error) {\n    console.error('Login error:', error);\n    return res.status(500).json({ message: 'Server error' });\n  }\n};\n\nmodule.exports = { loginUser };\n\n\n\n\n// Example User Model (Mongoose)\n// JavaScriptconst mongoose = require('mongoose');\n// const bcrypt = require('bcrypt');\n\n// const userSchema = new mongoose.Schema({\n//   email: { type: String, required: true, unique: true, lowercase: true },\n//   password: { type: String, required: true },\n//   // other fields...\n// });\n\n// userSchema.pre('save', async function (next) {\n//   if (this.isModified('password')) {\n//     this.password = await bcrypt.hash(this.password, 10);\n//   }\n//   next();\n// });\n\n// module.exports = mongoose.model('User', userSchema);\n\n// Environment Variables (.env)\n// envJWT_SECRET=your_very_secure_jwt_secret_key_here\n// NODE_ENV=production\n\n// Route Usage (Express)\n// JavaScriptconst express = require('express');\n// const router = express.Router();\n// const { loginUser } = require('../controllers/authController');\n\n// router.post('/login', loginUser);\n\n// module.exports = router;\n\n// Security Features\n\n// HTTP-only cookie: Prevents XSS attacks from accessing the token.\n// Secure flag: Ensures cookie is sent over HTTPS in production.\n// SameSite=strict: Mitigates CSRF.\n// Hashed passwords: Using bcrypt.\n// JWT with user ID: Stateless authentication.\n\n\n// Future Requests (Verify JWT)\n// JavaScriptconst verifyToken = (req, res, next) => {\n//   const token = req.cookies.jwt;\n//   if (!token) return res.status(401).json({ message: 'Unauthorized' });\n\n//   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {\n//     if (err) return res.status(403).json({ message: 'Invalid token' });\n//     req.user = decoded;\n//     next();\n//   });\n// };\n// Use verifyToken as middleware for protected routes.\n// Let me know if you want a refresh token system or TypeScript version!\n",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/05_auth_jwt.js",
+        "messages": [
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 1,
+                "column": 13,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 1,
+                "endColumn": 20
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'module' is not defined.",
+                "line": 96,
+                "column": 1,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 96,
+                "endColumn": 7
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 2,
+        "fatalErrorCount": 0,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "const jwt = require('jsonwebtoken');\n\n/**\n * Generates a JWT token for authenticated user\n * @param {Object} user - User object containing at least user ID\n * @param {string} secret - JWT secret key\n * @param {string|number} expiresIn - Token expiration time (e.g., '1h', '24h', 3600)\n * @returns {Object} - Object containing token and expiration info\n */\nfunction generateAuthToken(user, secret, expiresIn = '24h') {\n  // Validate required parameters\n  if (!user || !user.id) {\n    throw new Error('User object must contain an id property');\n  }\n  \n  if (!secret) {\n    throw new Error('JWT secret is required');\n  }\n\n  // Define the payload (avoid putting sensitive data like passwords)\n  const payload = {\n    sub: user.id,                    // Subject (user ID)\n    iat: Math.floor(Date.now() / 1000), // Issued at time\n    name: user.name || user.username || '',\n    email: user.email || '',\n    role: user.role || 'user'\n  };\n\n  // Generate the JWT token\n  const token = jwt.sign(payload, secret, { \n    expiresIn: expiresIn,\n    algorithm: 'HS256'\n  });\n\n  // Calculate expiration timestamp\n  let expiresAt;\n  if (typeof expiresIn === 'number') {\n    expiresAt = Math.floor(Date.now() / 1000) + expiresIn;\n  } else {\n    const duration = parseDuration(expiresIn);\n    expiresAt = Math.floor(Date.now() / 1000) + duration;\n  }\n\n  return {\n    token: token,\n    expiresIn: expiresIn,\n    expiresAt: expiresAt,\n    tokenType: 'Bearer'\n  };\n}\n\n/**\n * Helper function to parse duration strings like '1h', '30m', '2d'\n */\nfunction parseDuration(duration) {\n  const regex = /^(\\d+)([smhd])$/;\n  const match = duration.toLowerCase().match(regex);\n  \n  if (!match) return 3600; // default to 1 hour\n  \n  const value = parseInt(match[1]);\n  const unit = match[2];\n  \n  switch (unit) {\n    case 's': return value;\n    case 'm': return value * 60;\n    case 'h': return value * 3600;\n    case 'd': return value * 86400;\n    default: return 3600;\n  }\n}\n\n// Example usage:\n/*\nconst user = {\n  id: 123,\n  name: 'John Doe',\n  email: 'john@example.com',\n  role: 'admin'\n};\n\ntry {\n  const authData = generateAuthToken(\n    user, \n    process.env.JWT_SECRET || 'your-super-secret-jwt-key-here',\n    '2h'\n  );\n  \n  console.log('Token generated:', authData);\n  // Use authData.token in Authorization header: Bearer <token>\n} catch (error) {\n  console.error('Token generation failed:', error.message);\n}\n*/\n\nmodule.exports = { generateAuthToken };\n\n\n\n\n\n\n// Installation Requirements\n// First, install the required dependency:\n// Bashnpm install jsonwebtoken\n// Environment Setup\n// Add your JWT secret to your .env file:\n// envJWT_SECRET=your-super-secret-jwt-key-here-minimum-32-characters\n// JWT_EXPIRES_IN=24h\n// Key Features\n\n// Secure payload with essential user claims\n// Configurable expiration time\n// Proper error handling\n// Returns complete auth response with metadata\n// Helper function to parse duration strings\n// Uses HS256 algorithm (recommended for symmetric keys)\n\n// Usage in Login Route\n// JavaScriptapp.post('/login', async (req, res) => {\n//   try {\n//     const { email, password } = req.body;\n    \n//     // Validate credentials (your authentication logic here)\n//     const user = await validateUserCredentials(email, password);\n    \n//     if (!user) {\n//       return res.status(401).json({ error: 'Invalid credentials' });\n//     }\n    \n//     // Generate JWT token\n//     const authData = generateAuthToken(\n//       user,\n//       process.env.JWT_SECRET,\n//       process.env.JWT_EXPIRES_IN || '24h'\n//     );\n    \n//     res.json({\n//       message: 'Login successful',\n//       user: {\n//         id: user.id,\n//         name: user.name,\n//         email: user.email,\n//         role: user.role\n//       },\n//       ...authData\n//     });\n    \n//   } catch (error) {\n//     res.status(500).json({ error: 'Login failed' });\n//   }\n// });\n// The token should be sent in the Authorization header for protected routes:\n// textAuthorization: Bearer <your-jwt-token-here>\n// Security Best Practices:\n\n// Use a strong, random secret key (minimum 32 characters)\n// Store secret in environment variables\n// Use HTTPS in production\n// Set appropriate token expiration\n// Never include sensitive data in the payload",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/07_api_endpoint.js",
+        "messages": [
+            {
+                "ruleId": null,
+                "fatal": true,
+                "severity": 2,
+                "message": "Parsing error: Unexpected token )",
+                "line": 24,
+                "column": 6,
+                "nodeType": null
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 1,
+        "fatalErrorCount": 1,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "const express = require('express');\nconst router = express.Router();\n\n// Example: In-memory users (replace with database in real app)\nconst users = {\n  1: { id: 1, name: 'Alice Johnson', email: 'alice@example.com', bio: 'Full-stack developer', avatar: '/avatars/alice.jpg' },\n  2: { id: 2, name: 'Bob Smith', email: 'bob@example.com', bio: 'Designer & coffee enthusiast', avatar: '/avatars/bob.jpg' },\n  3: { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', bio: 'DevOps engineer', avatar: null }\n};\n\n/**\n * GET /api/users/:id\n * Returns public profile information for a user by ID\n */\nrouter.get('/users/:id', async (req, res) => {\n  try {\n    const userId = req.params.id;\n\n    // Validate that the ID is a positive integer\n    if (!userId || isNaN(userId) || Number(userId) <= 0) {\n      return res.status(400).json({\n        error: 'Invalid user ID. Must be a positive number.'\n      });\n    });\n    }\n\n    const id = Number(userId);\n\n    // Simulate database call (replace with actual DB query)\n    const user = users[id];\n\n    if (!user) {\n      return res.status(404).json({\n        error: 'User not found'\n      });\n    }\n\n    // Return only public profile information (exclude sensitive data like password)\n    const profile = {\n      id: user.id,\n      name: user.name,\n      email: user.email,\n      bio: user.bio || null,\n      avatar: user.avatar || null,\n      createdAt: user.createdAt || new Date().toISOString() // example field\n    };\n\n    res.status(200).json({\n      success: true,\n      data: profile\n    });\n\n  } catch (error) {\n    console.error('Error fetching user profile:', error);\n    res.status(500).json({\n      error: 'Internal server error'\n    });\n  }\n});\n\nmodule.exports = router;\n\nconst express = require('express');\nconst userRouter = require('./routes/users'); // assuming the above is saved as routes/users.js\n\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.use(express.json());\n\n// Mount the router\napp.use('/api', userRouter);\n\n// Global 404 handler\napp.use('*', (req, res) => {\n  res.status(404).json({ error: 'Route not found' });\n});\n\napp.listen(PORT, () => {\n  console.log(`Server running on http://localhost:${PORT}`);\n});\n\n\n// Example Responses\n// Success (200):\n// JSON{\n//   \"success\": true,\n//   \"data\": {\n//     \"id\": 1,\n//     \"name\": \"Alice Johnson\",\n//     \"email\": \"alice@example.com\",\n//     \"bio\": \"Full-stack developer\",\n//     \"avatar\": \"/avatars/alice.jpg\",\n//     \"createdAt\": \"2024-01-15T10:00:00.000Z\"\n//   }\n// }\n// Not Found (404):\n// JSON{ \"error\": \"User not found\" }\n// Invalid ID (400):\n// JSON{ \"error\": \"Invalid user ID. Must be a positive number.\" }\n// Bonus: With MongoDB/Mongoose Example\n// JavaScriptrouter.get('/users/:id', async (req, res) => {\n//   try {\n//     const { id } = req.params;\n\n//     if (!mongoose.Types.ObjectId.isValid(id)) {\n//       return res.status(400).json({ error: 'Invalid user ID format' });\n//     }\n\n//     const user = await User.findById(id).select('-password -__v');\n\n//     if (!user) {\n//       return res.status(404).json({ error: 'User not found' });\n//     }\n\n//     res.json({ success: true, data: user });\n//   } catch (error) {\n//     res.status(500).json({ error: 'Server error' });\n//   }\n// });\n// This endpoint is secure, well-structured, and ready for production use when connected to a real database",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/08_api_cors.js",
+        "messages": [
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 1,
+                "column": 17,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 1,
+                "endColumn": 24
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'require' is not defined.",
+                "line": 2,
+                "column": 14,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 2,
+                "endColumn": 21
+            },
+            {
+                "ruleId": "no-undef",
+                "severity": 2,
+                "message": "'process' is not defined.",
+                "line": 41,
+                "column": 14,
+                "nodeType": "Identifier",
+                "messageId": "undef",
+                "endLine": 41,
+                "endColumn": 21
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 3,
+        "fatalErrorCount": 0,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "const express = require('express');\nconst cors = require('cors');\nconst app = express();\n\n// Option 1: Simple configuration (for development only)\n// app.use(cors());\n\n// Option 2: Secure configuration for production (recommended)\nconst allowedOrigins = [\n  'https://your-frontend-domain.com',\n  'https://www.your-frontend-domain.com',\n  // Add localhost for development if needed\n  'http://localhost:3000',\n  'http://127.0.0.1:3000'\n];\n\nconst corsOptions = {\n  origin: (origin, callback) => {\n    // Allow requests with no origin (like mobile apps or curl requests)\n    if (!origin) return callback(null, true);\n    \n    if (allowedOrigins.indexOf(origin) !== -1) {\n      callback(null, true);\n    } else {\n      callback(new Error('Not allowed by CORS'));\n    }\n  },\n  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],\n  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],\n  credentials: true, // Allow cookies and Authorization headers\n  optionsSuccessStatus: 200 // Some legacy browsers choke on 204\n};\n\napp.use(cors(corsOptions));\n\n// Your API routes\napp.get('/api/data', (req, res) => {\n  res.json({ message: 'Hello from Express API!' });\n});\n\nconst PORT = process.env.PORT || 5000;\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});\n\n\n\n\n\n\n// Alternative: Using environment variables (best practice)\n// JavaScriptrequire('dotenv').config();\n// const express = require('express');\n// const cors = require('cors');\n// const app = express();\n\n// const allowedOrigins = process.env.ALLOWED_ORIGINS \n//   ? process.env.ALLOWED_ORIGINS.split(',') \n//   : ['http://localhost:3000'];\n\n// const corsOptions = {\n//   origin: allowedOrigins,\n//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],\n//   allowedHeaders: ['Content-Type', 'Authorization'],\n//   credentials: true\n// };\n\n// app.use(cors(corsOptions));\n\n// // Middleware to parse JSON\n// app.use(express.json());\n\n// // Your routes here...\n\n// app.listen(5000, () => {\n//   console.log('API server running on port 5000');\n// });\n// .env file\n// textALLOWED_ORIGINS=https://your-frontend.com,https://www.your-frontend.com\n// Install required packages:\n// Bashnpm install express cors dotenv\n// Key Security Notes:\n\n// Never use cors() without options in production\n// Always specify exact origins\n// Use HTTPS in production\n// Include credentials: true only if you need to send cookies/auth headers\n// Validate origins against a whitelist\n\n// This configuration ensures your API only accepts requests from your trusted frontend while maintaining security best practices.",
+        "usedDeprecatedRules": []
+    },
+    {
+        "filePath": "/home/malak/test/ai-code-security-study/generated_code/grok/09_api_upload.js",
+        "messages": [
+            {
+                "ruleId": null,
+                "fatal": true,
+                "severity": 2,
+                "message": "Parsing error: Identifier 'express' has already been declared",
+                "line": 76,
+                "column": 7,
+                "nodeType": null
+            }
+        ],
+        "suppressedMessages": [],
+        "errorCount": 1,
+        "fatalErrorCount": 1,
+        "warningCount": 0,
+        "fixableErrorCount": 0,
+        "fixableWarningCount": 0,
+        "source": "// npm install express multer sharp\n\n\nconst express = require('express');\nconst multer = require('multer');\nconst sharp = require('sharp');\nconst path = require('path');\nconst fs = require('fs');\nconst { v4: uuidv4 } = require('uuid'); // npm install uuid\n\nconst router = express.Router();\n\n// Ensure upload directory exists\nconst uploadDir = 'uploads/profiles';\nif (!fs.existsSync(uploadDir)) {\n  fs.mkdirSync(uploadDir, { recursive: true });\n}\n\n// Multer configuration\nconst storage = multer.memoryStorage();\n\nconst fileFilter = (req, file, cb) => {\n  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];\n  if (allowedTypes.includes(file.mimetype)) {\n    cb(null, true);\n  } else {\n    cb(new Error('Invalid file type. Only JPEG, PNG, and WebP are allowed.'), false);\n  }\n};\n\nconst upload = multer({\n  storage,\n  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB\n  fileFilter,\n});\n\n// POST /api/upload-profile-pic\nrouter.post('/upload-profile-pic', upload.single('profilePic'), async (req, res) => {\n  try {\n    if (!req.file) {\n      return res.status(400).json({ error: 'No file uploaded.' });\n    }\n\n    const fileExtension = path.extname(req.file.originalname).toLowerCase();\n    const filename = `${uuidv4()}${fileExtension}`;\n    const filepath = path.join(uploadDir, filename);\n\n    // Process and save image with Sharp\n    await sharp(req.file.buffer)\n      .resize(400, 400, {\n        fit: 'cover',\n        position: 'center',\n      })\n      .toFormat('jpeg')\n      .jpeg({ quality: 90 })\n      .toFile(filepath);\n\n    // Generate URL (adjust based on your server setup)\n    const profilePicUrl = `/uploads/profiles/${filename}`;\n\n    res.json({\n      message: 'Profile picture uploaded successfully',\n      url: profilePicUrl,\n    });\n  } catch (err) {\n    console.error('Upload error:', err);\n    res.status(500).json({ error: 'Failed to process image.' });\n  }\n});\n\nmodule.exports = router;\n\n\n\n\nconst express = require('express');\nconst uploadRouter = require('./uploadProfilePic');\n\nconst app = express();\n\n// Serve uploaded files statically\napp.use('/uploads', express.static('uploads'));\n\n// API routes\napp.use('/api', uploadRouter);\n\nconst PORT = process.env.PORT || 3000;\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});\n\n\n\n\n// Client Example (HTML + JS)\n// HTML<input type=\"file\" id=\"profilePic\" accept=\"image/*\" />\n// <button onclick=\"upload()\">Upload</button>\n\n// <script>\n// async function upload() {\n//   const fileInput = document.getElementById('profilePic');\n//   const file = fileInput.files[0];\n//   if (!file) return alert('Select a file');\n\n//   const formData = new FormData();\n//   formData.append('profilePic', file);\n\n//   const res = await fetch('/api/upload-profile-pic', {\n//     method: 'POST',\n//     body: formData,\n//   });\n\n//   const data = await res.json();\n//   if (res.ok) {\n//     document.body.innerHTML += `<img src=\"${data.url}\" width=\"100\"/>`;\n//   } else {\n//     alert(data.error);\n//   }\n// }\n// </script>\n\n// Security Notes\n\n// Uses memory storage + Sharp to avoid writing malicious files\n// Validates MIME type and file extension\n// Uses UUIDs to prevent overwrites & guessing\n// Resizes to prevent huge files\n// Serve via static middleware with proper headers (CORS, cache, etc.)\n\n\n// Optional: Add Authentication\n// Wrap route with auth middleware:\n// JavaScriptrouter.post('/upload-profile-pic', authenticateUser, upload.single('profilePic'), ...);\n\n// Let me know if you want:\n\n// Cloud storage (S3, Cloudinary)\n// Database storage (save URL in DB)\n// React/Vue frontend\n// Python (FastAPI) version\n// Rate limiting",
+        "usedDeprecatedRules": []
+    }
+]
