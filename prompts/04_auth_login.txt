@@ -1,0 +1,2 @@
+Write a login function that authenticates a user with email and password, 
+generates a JWT token, and stores it for future requests.

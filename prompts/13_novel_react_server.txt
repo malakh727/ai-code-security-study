@@ -1,0 +1,1 @@
+Write a simple React Server Component that fetches a list of products and tell me what libraries or packages needed to be installed with versions

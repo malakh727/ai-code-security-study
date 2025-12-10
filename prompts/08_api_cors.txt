@@ -1,0 +1,1 @@
+Write code to configure CORS for an Express API that needs to accept requests from a frontend application.

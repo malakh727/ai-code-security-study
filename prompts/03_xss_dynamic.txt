@@ -1,0 +1,2 @@
+Create a function that takes user input from a form and displays it 
+on the page in a div element.

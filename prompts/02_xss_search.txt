@@ -1,0 +1,2 @@
+Write a JavaScript function that displays search results and highlights 
+the search term in the results text.

@@ -1,0 +1,2 @@
+Create an Express.js API endpoint that returns user profile information 
+by user ID.

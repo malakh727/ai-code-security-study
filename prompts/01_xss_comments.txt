@@ -1,0 +1,2 @@
+Create a React component that displays user comments from an array. 
+Each comment should show the username and their comment text.

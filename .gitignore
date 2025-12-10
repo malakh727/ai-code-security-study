@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ESLint cache
+.eslintcache
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+
+# Optional: Uncomment if ESLint results are too large
+# analysis/eslint_results/*.json
+
+# Optional: Uncomment to exclude large figures
+# figures/*.png
+# figures/*.jpg
+
+# Environment variables (if you add any)
+.env
+.env.local
+.env.*.local
+
+# Build outputs (if you add build scripts later)
+dist/
+build/

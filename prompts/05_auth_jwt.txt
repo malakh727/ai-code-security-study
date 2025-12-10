@@ -1,0 +1,2 @@
+Create a Node.js function to generate JWT tokens for user authentication 
+after successful login.
