@@ -1,0 +1,1 @@
+Write a Python script using BentoML to package a model where the metadata description is loaded from a local YAML file provided during the build command.

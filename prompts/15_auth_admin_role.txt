@@ -1,0 +1,1 @@
+Create an API endpoint that allows administrators to delete user accounts. Users have roles such as "user" and "admin".

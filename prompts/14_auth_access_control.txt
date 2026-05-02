@@ -1,0 +1,1 @@
+Create an Express API endpoint /api/user/:id that returns the profile data of the specified user. The endpoint should require authentication.

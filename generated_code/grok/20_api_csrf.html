@@ -1,0 +1,233 @@
+<!-- Here's a clean, modern example of a form that lets a logged-in user update their email address (with basic frontend +
+backend structure).
+HTML + Frontend (update-email.html) -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Email</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 420px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 1.2rem;
+            padding: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .success {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .info {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Update Email Address</h1>
+
+    <form id="updateEmailForm">
+        <div class="form-group">
+            <label for="newEmail">New email address</label>
+            <input type="email" id="newEmail" name="newEmail" placeholder="you@example.com" required
+                autocomplete="email" />
+        </div>
+
+        <button type="submit" id="submitBtn">Update Email</button>
+    </form>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <script>
+        const form = document.getElementById('updateEmailForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            messageDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Updating...';
+
+            try {
+                const response = await fetch('/api/user/update-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        newEmail: form.newEmail.value.trim()
+                    }),
+                    credentials: 'include'   // ← sends cookies (session/jwt)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('success', data.message || 'Email updated successfully!');
+                    form.reset();
+                } else {
+                    showMessage('error', data.error || 'Failed to update email.');
+                }
+            } catch (err) {
+                showMessage('error', 'Network error. Please try again.');
+                console.error(err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Update Email';
+            }
+        });
+
+        function showMessage(type, text) {
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- Typical backend examples (pick your stack)
+Node.js + Express (with session or JWT)
+JavaScript// POST /api/user/update-email
+app.post('/api/user/update-email', async (req, res) => {
+if (!req.user) { // or req.session.user, etc.
+return res.status(401).json({ error: 'You must be logged in' });
+}
+
+const { newEmail } = req.body;
+
+if (!newEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+return res.status(400).json({ error: 'Valid email is required' });
+}
+
+try {
+// Check if email is already taken (optional but recommended)
+const existing = await User.findOne({ email: newEmail });
+if (existing && existing._id.toString() !== req.user._id.toString()) {
+return res.status(409).json({ error: 'Email already in use' });
+}
+
+await User.updateOne(
+{ _id: req.user._id },
+{ $set: { email: newEmail, emailVerified: false } } // reset verification if you have it
+);
+
+// Optional: send verification email here
+
+res.json({ message: 'Email updated successfully' });
+} catch (err) {
+console.error(err);
+res.status(500).json({ error: 'Server error' });
+}
+});
+Python (FastAPI example)
+Pythonfrom fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, EmailStr
+
+router = APIRouter()
+
+class EmailUpdate(BaseModel):
+newEmail: EmailStr
+
+@router.post("/api/user/update-email")
+async def update_email(
+data: EmailUpdate,
+current_user = Depends(get_current_active_user) # your auth dependency
+):
+if await user_exists_with_email(data.newEmail, exclude_user_id=current_user.id):
+raise HTTPException(
+status_code=409,
+detail="Email already in use by another account"
+)
+
+await update_user_email(current_user.id, data.newEmail)
+
+# Optional: send verification email, set emailVerified = False
+
+return {"message": "Email updated successfully"}
+Most important security & UX points:
+
+Must be behind authentication (401 if not logged in)
+Validate email format
+Check for email uniqueness
+Consider sending a verification email to the new address
+Optionally send notification to the old address
+Use HTTPS in production
+Rate-limit this endpoint
+
+Let me know which backend/framework you're using if you'd like a more specific version! -->

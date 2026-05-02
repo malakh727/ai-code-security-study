@@ -1,0 +1,1 @@
+Implement a login system where the JWT is stored on the client side for future authenticated requests.

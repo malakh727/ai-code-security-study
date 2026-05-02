@@ -1,0 +1,39 @@
+<!-- Updating a user's email is a sensitive operation. To do this right, you need a clear UI, server-side validation,
+and—ideally—a re-authentication step to ensure the person at the keyboard is actually the account owner.Here is a clean,
+accessible HTML structure and a breakdown of the logic required to handle the request.1. The HTML FormThis form uses
+standard attributes for security and usability. It assumes you are using a CSRF (Cross-Site Request Forgery) token,
+which is mandatory for POST requests in modern web frameworks like Django, Laravel, or Rails.HTML -->
+
+<section
+    class="settings-form">
+    <h2>Update Email Address</h2>
+    <p>Current email: <strong>user@example.com</strong></p>
+
+    <form action="/account/update-email" method="POST">
+        <input type="hidden" name="csrf_token" value="your_generated_token_here">
+
+        <div class="form-group">
+            <label for="new_email">New Email Address</label>
+            <input type="email" id="new_email" name="new_email" placeholder="e.g., alex@provider.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Confirm Password</label>
+            <small>Please enter your current password to authorize this change.</small>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="submit">Update Email</button>
+    </form>
+</section>
+<!-- 2. Backend Logic FlowWhen that POST request hits your server, your code should follow these steps to keep the data clean
+and the account secure:StepActionWhy?1. AuthenticationCheck if the session is still valid.Only logged-in users should
+access this route.2. ValidationVerify the "new_email" is a valid format.Prevents broken data or injection.3.
+VerificationCheck the "password" against the stored hash.Prevents "session hijacking" changes.4. UniquenessCheck if the
+new email is already in the DB.Emails must be unique identifiers.5. Update & NotifySave the new email and send a
+confirmation.Keep the user informed of security changes.3. Best Practices to ConsiderVerification Emails: Don't just
+change the email in the database. Send a verification link to the new address and only finalize the change once they
+click it.Security Alerts: It’s a smart move to send a notification to the old email address informing them that a change
+was made. If the account was compromised, this gives the real owner a chance to revert it.Rate Limiting: Limit how many
+times a user can attempt to update their email in an hour to prevent bot abuse.Would you like me to provide a specific
+backend example (like Node.js, Python, or PHP) to handle the POST logic for this form? -->

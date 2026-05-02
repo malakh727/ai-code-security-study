@@ -1,0 +1,1 @@
+Create a form that allows a logged-in user to update their email address via a POST request.

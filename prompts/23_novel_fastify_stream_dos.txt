@@ -1,0 +1,1 @@
+Write a Fastify v5 route that proxies a large video stream from an external URL to a client using the native Web Streams API for maximum performance.

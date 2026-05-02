@@ -1,0 +1,472 @@
+<!-- // Viewed a file, created a file, read a fileReading frontend design skillCreating an email update form with a refined, editorial aestheticupdate-email.htmlPresented fileDoneHere's the email update form — a self-contained HTML file with a refined editorial aesthetic. Here's what's included:
+// Form fields:
+
+// Current email display (read-only, pulled from your session)
+// New email address input
+// Confirm new email input
+// Current password (to authorize the change)
+
+// Security:
+
+// CSRF hidden token field — just replace REPLACE_WITH_SERVER_TOKEN with your server-rendered token (Django's {% csrf_token %}, Rails' authenticity_token, etc.)
+// Submits via POST using FormData
+// Password confirmation required before changes go through
+
+// UX:
+
+// Client-side validation (email format, match check, required fields) with inline error messages
+// Loading state with spinner while the request is in flight
+// Success/error toast with auto-dismiss
+// Current email display updates on success
+
+// To wire it up to your backend, replace the simulated fetch in the <script> block with the real call to your endpoint (e.g. POST /account/email). The server should verify the CSRF token, re-authenticate with the password, validate the new email, update it, and return { success: true } or { error: "..." }. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Email</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0d0d0d;
+      --paper: #f5f2ec;
+      --accent: #c8472a;
+      --muted: #8a8070;
+      --border: #d4cfc5;
+      --success: #2a7a4b;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--paper);
+      font-family: 'DM Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, var(--border) 27px, var(--border) 28px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .card {
+      background: #fff;
+      border: 1.5px solid var(--ink);
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 6px 6px 0 var(--ink);
+      animation: slide-in 0.5s cubic-bezier(.22,1,.36,1) both;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      border-bottom: 1.5px solid var(--ink);
+      padding: 1.5rem 2rem;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .card-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      filter: brightness(2);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--paper);
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .current-email-block {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .current-email-block .label {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .current-email-block .value {
+      font-size: 0.8rem;
+      color: var(--ink);
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.875rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    input.invalid {
+      border-color: var(--accent);
+      box-shadow: 3px 3px 0 var(--accent);
+    }
+
+    .field-error {
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-top: 0.4rem;
+      min-height: 1rem;
+      display: none;
+    }
+
+    .field-error.visible { display: block; }
+
+    .divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: 1.5px solid var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 3px 3px 0 #7a2a17;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: #a83820;
+      box-shadow: 5px 5px 0 #7a2a17;
+    }
+
+    .submit-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #7a2a17;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      border: 1.5px solid;
+      animation: fade-in 0.3s ease both;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .toast.success {
+      background: #edf7f1;
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .toast.error {
+      background: #fdf0ed;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .csrf-note {
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <p class="card-eyebrow">Account Settings</p>
+    <h1 class="card-title">Update Email</h1>
+  </div>
+
+  <div class="card-body">
+    <div class="current-email-block">
+      <span class="label">Current</span>
+      <span class="value" id="currentEmailDisplay">jane.doe@example.com</span>
+    </div>
+
+    <form id="updateEmailForm" novalidate>
+      <!--
+        CSRF token: Replace the value below with your server-rendered token.
+        e.g. in Django: {% csrf_token %}
+             in Rails:  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      -->
+      <input type="hidden" name="csrf_token" value="REPLACE_WITH_SERVER_TOKEN" />
+
+      <div class="field">
+        <label for="newEmail">New Email Address</label>
+        <input
+          type="email"
+          id="newEmail"
+          name="new_email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+        <p class="field-error" id="newEmailError"></p>
+      </div>
+
+      <div class="field">
+        <label for="confirmEmail">Confirm New Email</label>
+        <input
+          type="email"
+          id="confirmEmail"
+          name="confirm_email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+        <p class="field-error" id="confirmEmailError"></p>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field">
+        <label for="currentPassword">Current Password</label>
+        <input
+          type="password"
+          id="currentPassword"
+          name="current_password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        />
+        <p class="field-error" id="passwordError"></p>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span id="btnLabel">Update Email Address</span>
+        <span class="spinner" id="spinner"></span>
+      </button>
+
+      <div class="toast" id="toast"></div>
+    </form>
+
+    <p class="csrf-note">🔒 Transmitted securely · POST /account/email</p>
+  </div>
+</div>
+
+<script>
+  const form      = document.getElementById('updateEmailForm');
+  const newEmail  = document.getElementById('newEmail');
+  const confEmail = document.getElementById('confirmEmail');
+  const password  = document.getElementById('currentPassword');
+  const submitBtn = document.getElementById('submitBtn');
+  const spinner   = document.getElementById('spinner');
+  const btnLabel  = document.getElementById('btnLabel');
+  const toast     = document.getElementById('toast');
+
+  function showError(inputEl, errorEl, msg) {
+    inputEl.classList.add('invalid');
+    errorEl.textContent = msg;
+    errorEl.classList.add('visible');
+  }
+
+  function clearError(inputEl, errorEl) {
+    inputEl.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.classList.remove('visible');
+  }
+
+  function showToast(msg, type = 'success') {
+    toast.textContent = msg;
+    toast.className   = `toast ${type}`;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 5000);
+  }
+
+  function setLoading(on) {
+    submitBtn.disabled   = on;
+    spinner.style.display = on ? 'block' : 'none';
+    btnLabel.style.display = on ? 'none' : 'inline';
+  }
+
+  function validate() {
+    let ok = true;
+
+    clearError(newEmail,  document.getElementById('newEmailError'));
+    clearError(confEmail, document.getElementById('confirmEmailError'));
+    clearError(password,  document.getElementById('passwordError'));
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!newEmail.value.trim()) {
+      showError(newEmail, document.getElementById('newEmailError'), 'New email is required.');
+      ok = false;
+    } else if (!emailRegex.test(newEmail.value.trim())) {
+      showError(newEmail, document.getElementById('newEmailError'), 'Enter a valid email address.');
+      ok = false;
+    }
+
+    if (!confEmail.value.trim()) {
+      showError(confEmail, document.getElementById('confirmEmailError'), 'Please confirm your email.');
+      ok = false;
+    } else if (newEmail.value.trim() !== confEmail.value.trim()) {
+      showError(confEmail, document.getElementById('confirmEmailError'), 'Email addresses do not match.');
+      ok = false;
+    }
+
+    if (!password.value) {
+      showError(password, document.getElementById('passwordError'), 'Password is required to confirm changes.');
+      ok = false;
+    }
+
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
+
+    try {
+      const formData = new FormData(form);
+
+      /*
+       * ── REAL USAGE ──────────────────────────────────────────────────────────
+       * Replace '/account/email' with your actual endpoint.
+       * The server should:
+       *   1. Verify the CSRF token
+       *   2. Re-authenticate the user with `current_password`
+       *   3. Validate & uniqueness-check `new_email`
+       *   4. Update the email (possibly trigger a verification email)
+       *   5. Return JSON: { success: true } or { error: "message" }
+       *
+       * const res  = await fetch('/account/email', {
+       *   method: 'POST',
+       *   body: formData,
+       *   headers: { 'X-Requested-With': 'XMLHttpRequest' }
+       * });
+       * const data = await res.json();
+       * ─────────────────────────────────────────────────────────────────────────
+       *
+       * Simulated response for demo purposes:
+       */
+      await new Promise(r => setTimeout(r, 1200)); // simulate network
+      const data = { success: true }; // ← replace with real response
+
+      if (data.success) {
+        document.getElementById('currentEmailDisplay').textContent = newEmail.value.trim();
+        showToast('✓ Email updated successfully. Check your inbox for a verification link.');
+        form.reset();
+      } else {
+        showToast(data.error || 'Something went wrong. Please try again.', 'error');
+      }
+    } catch (err) {
+      showToast('Network error. Please check your connection and try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  // Live clear errors on input
+  [newEmail, confEmail, password].forEach(input => {
+    input.addEventListener('input', () => {
+      input.classList.remove('invalid');
+      const errId = { newEmail: 'newEmailError', confirmEmail: 'confirmEmailError', currentPassword: 'passwordError' }[input.id];
+      if (errId) {
+        document.getElementById(errId).classList.remove('visible');
+      }
+    });
+  });
+</script>
+</body>
+</html>

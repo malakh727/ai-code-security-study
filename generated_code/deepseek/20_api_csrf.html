@@ -1,0 +1,339 @@
+<!-- Here's a complete HTML form that allows a logged-in user to update their email address via a POST request:
+
+html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Email Address</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .current-email {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Email Address</h1>
+
+        <!-- Success message container -->
+        <div id="successMessage" class="success-message">
+            Your email address has been successfully updated!
+        </div>
+
+        <!-- Current email display (simulated - in real app, this would come from the server) -->
+        <div class="current-email">
+            <strong>Current Email:</strong> user@example.com
+        </div>
+
+        <!-- Email update form -->
+        <form id="emailUpdateForm" action="/api/user/email" method="POST">
+            <!-- CSRF Token (important for security) -->
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+            <div class="form-group">
+                <label for="new_email">New Email Address *</label>
+                <input type="email" id="new_email" name="new_email" required placeholder="Enter your new email address">
+                <div id="emailError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_email">Confirm New Email Address *</label>
+                <input type="email" id="confirm_email" name="confirm_email" required
+                    placeholder="Confirm your new email address">
+                <div id="confirmError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="current_password">Current Password *</label>
+                <input type="password" id="current_password" name="current_password" required
+                    placeholder="Enter your current password">
+                <div class="info-text">For security, please confirm your password</div>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Update Email</button>
+                <button type="button" class="btn btn-secondary"
+                    onclick="window.location.href='/profile'">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('emailUpdateForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById('successMessage').style.display = 'none';
+
+            // Get form values
+            const newEmail = document.getElementById('new_email').value;
+            const confirmEmail = document.getElementById('confirm_email').value;
+            const password = document.getElementById('current_password').value;
+
+            // Validate email match
+            if (newEmail !== confirmEmail) {
+                document.getElementById('confirmError').textContent = 'Email addresses do not match';
+                document.getElementById('confirmError').style.display = 'block';
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(newEmail)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                document.getElementById('emailError').style.display = 'block';
+                return;
+            }
+
+            // Validate password (not empty)
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                document.getElementById('passwordError').style.display = 'block';
+                return;
+            }
+
+            try {
+                // Prepare form data
+                const formData = new FormData(this);
+
+                // Send POST request
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest' // Indicate AJAX request
+                    }
+                });
+
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+
+                    // Clear password field
+                    document.getElementById('current_password').value = '';
+
+                    // Optionally update the displayed current email
+                    document.querySelector('.current-email').innerHTML =
+                        `<strong>Current Email:</strong> ${newEmail}`;
+
+                    // Reset form except email field
+                    document.getElementById('confirm_email').value = '';
+
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    // Handle error response
+                    const error = await response.text();
+                    alert('Error updating email: ' + error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating your email. Please try again.');
+            }
+        });
+
+        // Real-time email match validation
+        document.getElementById('confirm_email').addEventListener('input', function () {
+            const newEmail = document.getElementById('new_email').value;
+            const confirmEmail = this.value;
+
+            if (confirmEmail && newEmail !== confirmEmail) {
+                document.getElementById('confirmError').textContent = 'Email addresses do not match';
+                document.getElementById('confirmError').style.display = 'block';
+            } else {
+                document.getElementById('confirmError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
+<!-- This form includes:
+
+Key Features:
+Security Measures:
+
+Password confirmation required for security
+
+CSRF token hidden field (important for preventing cross-site request forgery)
+
+POST method for sensitive data
+
+Form Fields:
+
+New email address (required)
+
+Confirm new email (required)
+
+Current password (required for verification)
+
+Validation:
+
+Client-side validation for email format
+
+Real-time email match checking
+
+Required field validation
+
+Password not empty validation
+
+User Experience:
+
+Shows current email for reference
+
+Clear error messages
+
+Success message with auto-redirect
+
+Responsive design
+
+Cancel button to return to profile
+
+AJAX Submission:
+
+Prevents default form submission
+
+Handles response without page reload
+
+Shows success/error messages
+
+Backend Requirements:
+The form expects a POST endpoint at /api/user/email that:
+
+Validates the current password
+
+Checks if the new email is unique/available
+
+Updates the user's email in the database
+
+Returns appropriate success/error responses
+
+Additional Considerations:
+Add rate limiting to prevent abuse
+
+Send verification email to new address
+
+Log the change for security auditing
+
+Consider adding 2FA verification for email changes -->
