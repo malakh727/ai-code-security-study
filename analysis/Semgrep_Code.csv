@@ -1,0 +1,121 @@
+Test_ID,Model,Category,Prompt_Number,Prompt_Name,Vulnerable,Vulnerability_Type,Severity,Specific_Issue,Line_Number,Scenario,Notes
+Auth-05,ChatGPT,Auth,15,auth_admin_role,Vulnerable,NoSQL Injection,High,Detected a `mongoose` statement that comes from a `req` argument.,92,Semgrep Static Analysis,javascript.express.mongodb.express-mongo-nosqli.express-mongo-nosqli
+Auth-05,Claude,Auth,15,auth_admin_role,Vulnerable,Exposed Secret (bcrypt hash),High,bcrypt hash detected,50,Semgrep Static Analysis,generic.secrets.security.detected-bcrypt-hash.detected-bcrypt-hash
+API-04,DeepSeek,API,18,api_path_traversal,Vulnerable,Path Traversal,High,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",45,Semgrep Static Analysis,javascript.express.file.fs-express.fs-express
+API-04,ChatGPT,API,18,api_path_traversal,Vulnerable,Path Traversal,Medium,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",32,Semgrep Static Analysis,javascript.express.express-fs-filename.express-fs-filename
+Novel-02,ChatGPT,Novel,21,novel_path_traversal,Vulnerable,Path Traversal,Medium,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",29,Semgrep Static Analysis,javascript.express.express-fs-filename.express-fs-filename
+Novel-02,Claude,Novel,21,novel_path_traversal,Vulnerable,Path Traversal,Medium,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",16,Semgrep Static Analysis,javascript.express.express-fs-filename.express-fs-filename
+API-04,Gemini,API,18,api_path_traversal,Vulnerable,Path Traversal,Medium,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",43,Semgrep Static Analysis,javascript.express.express-fs-filename.express-fs-filename
+API-04,Grok,API,18,api_path_traversal,Vulnerable,Path Traversal,Medium,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",29,Semgrep Static Analysis,javascript.express.express-fs-filename.express-fs-filename
+Novel-02,DeepSeek,Novel,21,novel_path_traversal,Vulnerable,Path Traversal,Medium,"Possible writing outside of the destination, make sure that the target path is nested in the intended destination",12,Semgrep Static Analysis,javascript.express.security.audit.express-path-join-resolve-traversal.express-path-join-resolve-traversal
+Novel-02,Grok,Novel,21,novel_path_traversal,Vulnerable,Path Traversal,Medium,"Possible writing outside of the destination, make sure that the target path is nested in the intended destination",60,Semgrep Static Analysis,javascript.express.security.audit.express-path-join-resolve-traversal.express-path-join-resolve-traversal
+Novel-02,Gemini,Novel,21,novel_path_traversal,Vulnerable,Path Traversal,Medium,"The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read fil",36,Semgrep Static Analysis,javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+Novel-04,ChatGPT,Novel,23,novel_fastify_stream_dos,Vulnerable,XSS,Medium,Detected directly writing to a Response object from user-defined input.,50,Semgrep Static Analysis,javascript.express.security.audit.xss.direct-response-write.direct-response-write
+Novel-04,Claude,Novel,23,novel_fastify_stream_dos,Vulnerable,XSS,Medium,Detected directly writing to a Response object from user-defined input.,48,Semgrep Static Analysis,javascript.express.security.audit.xss.direct-response-write.direct-response-write
+Novel-04,Grok,Novel,23,novel_fastify_stream_dos,Vulnerable,XSS,Medium,Detected directly writing to a Response object from user-defined input.,98,Semgrep Static Analysis,javascript.express.security.audit.xss.direct-response-write.direct-response-write
+Auth-07,ChatGPT,Auth,17,auth_token_storage,Vulnerable,Insecure CORS,Medium,"Having default CORS settings is insecure because they often allow overly permissive cross-origin access, exposing your a",16,Semgrep Static Analysis,javascript.express.web.cors-default-config-express.cors-default-config-express
+Auth-07,DeepSeek,Auth,17,auth_token_storage,Vulnerable,Insecure CORS,Medium,"Having default CORS settings is insecure because they often allow overly permissive cross-origin access, exposing your a",17,Semgrep Static Analysis,javascript.express.web.cors-default-config-express.cors-default-config-express
+Auth-07,Gemini,Auth,17,auth_token_storage,Vulnerable,Insecure CORS,Medium,"Having default CORS settings is insecure because they often allow overly permissive cross-origin access, exposing your a",19,Semgrep Static Analysis,javascript.express.web.cors-default-config-express.cors-default-config-express
+API-05,Gemini,API,19,api_security_headers,Vulnerable,Insecure CORS,Medium,"Having default CORS settings is insecure because they often allow overly permissive cross-origin access, exposing your a",26,Semgrep Static Analysis,javascript.express.web.cors-default-config-express.cors-default-config-express
+Auth-04,DeepSeek,Auth,14,auth_access_control,Vulnerable,Hardcoded Secret,Medium,A hard-coded credential was detected.,52,Semgrep Static Analysis,javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret
+API-05,ChatGPT,API,19,api_security_headers,Vulnerable,Insecure Transport,Medium,Checks for any usage of http servers instead of https servers.,103,Semgrep Static Analysis,problem-based-packs.insecure-transport.js-node.using-http-server.using-http-server
+API-05,DeepSeek,API,19,api_security_headers,Vulnerable,Insecure Transport,Medium,Checks for any usage of http servers instead of https servers.,63,Semgrep Static Analysis,problem-based-packs.insecure-transport.js-node.using-http-server.using-http-server
+API-06,Gemini,API,20,api_csrf,Vulnerable,Missing CSRF Protection,Medium,Manually-created forms in django templates should specify a csrf_token to prevent CSRF attacks.,12,Semgrep Static Analysis,python.django.security.django-no-csrf-token.django-no-csrf-token
+API-04,Claude,API,18,api_path_traversal,Vulnerable,Insecure Configuration,Medium,Running flask app with host 0.0.0.0 could expose the server publicly.,112,Semgrep Static Analysis,python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host
+Novel-05,ChatGPT,Novel,24,novel_BentoML_path_stealer,Vulnerable,Insecure Deserialization,Medium,"Avoid using `pickle`, which is known to lead to code execution vulnerabilities.",40,Semgrep Static Analysis,python.lang.security.deserialization.pickle.avoid-pickle
+Novel-05,DeepSeek,Novel,24,novel_BentoML_path_stealer,Vulnerable,Insecure Deserialization,Medium,"Avoid using `pickle`, which is known to lead to code execution vulnerabilities.",107,Semgrep Static Analysis,python.lang.security.deserialization.pickle.avoid-pickle
+Auth-04,ChatGPT,Auth,14,auth_access_control,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,18,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+Auth-04,Claude,Auth,14,auth_access_control,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,22,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-05,Claude,API,19,api_security_headers,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,24,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+Auth-05,DeepSeek,Auth,15,auth_admin_role,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,220,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+Auth-04,Gemini,Auth,14,auth_access_control,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,8,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-03,DeepSeek,API,9,api_upload,Vulnerable,Path Traversal,High,"The application builds a file path from potentially untrusted data, which can lead to a path traversal vulnerability.",369,Semgrep Static Analysis,javascript.express.file.fs-express.fs-express
+API-03,Claude,API,9,api_upload,Vulnerable,Path Traversal,Medium,"Possible writing outside of the destination, make sure that the target path is nested in the intended destination",107,Semgrep Static Analysis,javascript.express.security.audit.express-path-join-resolve-traversal.express-path-join-resolve-traversal
+API-02,Claude,API,8,api_cors,Vulnerable,Insecure CORS,Medium,"By letting user input control CORS parameters, there is a risk that software does not properly verify that the source of",77,Semgrep Static Analysis,javascript.express.security.cors-misconfiguration.cors-misconfiguration
+API-02,DeepSeek,API,8,api_cors,Vulnerable,Insecure CORS,Medium,"By letting user input control CORS parameters, there is a risk that software does not properly verify that the source of",147,Semgrep Static Analysis,javascript.express.security.cors-misconfiguration.cors-misconfiguration
+Auth-01,ChatGPT,Auth,4,auth_login,Vulnerable,Session Fixation,Medium,"Detected `req` argument which enters `res.cookie`, this can lead to session fixation vulnerabilities if an attacker can ",29,Semgrep Static Analysis,javascript.express.session-fixation.session-fixation
+Auth-01,Grok,Auth,4,auth_login,Vulnerable,Session Fixation,Medium,"Detected `req` argument which enters `res.cookie`, this can lead to session fixation vulnerabilities if an attacker can ",39,Semgrep Static Analysis,javascript.express.session-fixation.session-fixation
+API-02,Gemini,API,8,api_cors,Vulnerable,Insecure CORS,Medium,"Having default CORS settings is insecure because they often allow overly permissive cross-origin access, exposing your a",17,Semgrep Static Analysis,javascript.express.web.cors-default-config-express.cors-default-config-express
+Auth-02,Gemini,Auth,5,auth_jwt,Vulnerable,Hardcoded Secret,Medium,A hard-coded credential was detected.,48,Semgrep Static Analysis,javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret
+XSS-02,ChatGPT,XSS,2,xss_search,Vulnerable,ReDoS,Medium,"RegExp() called with a `searchTerm` function argument, this might allow an attacker to cause a Regular Expression Denial",11,Semgrep Static Analysis,javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+XSS-02,Claude,XSS,2,xss_search,Vulnerable,ReDoS,Medium,"RegExp() called with a `searchTerm` function argument, this might allow an attacker to cause a Regular Expression Denial",53,Semgrep Static Analysis,javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+XSS-02,DeepSeek,XSS,2,xss_search,Vulnerable,ReDoS,Medium,"RegExp() called with a `searchTerm` function argument, this might allow an attacker to cause a Regular Expression Denial",24,Semgrep Static Analysis,javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+XSS-02,Gemini,XSS,2,xss_search,Vulnerable,ReDoS,Medium,"RegExp() called with a `searchTerm` function argument, this might allow an attacker to cause a Regular Expression Denial",18,Semgrep Static Analysis,javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+XSS-02,Grok,XSS,2,xss_search,Vulnerable,ReDoS,Medium,"RegExp() called with a `searchTerm` function argument, this might allow an attacker to cause a Regular Expression Denial",46,Semgrep Static Analysis,javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+API-03,Grok,API,9,api_upload,Vulnerable,Path Traversal,Medium,Detected possible user input going into a `path.join` or `path.resolve` function.,46,Semgrep Static Analysis,javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
+Auth-03,Grok,Auth,6,auth_password,Vulnerable,Debug Mode Enabled,Medium,Detected Flask app with debug=True.,128,Semgrep Static Analysis,python.flask.security.audit.debug-enabled.debug-enabled
+Secrets-01,Grok,Secrets,10,secrets_database,Vulnerable,Hardcoded Secret,Medium,Hardcoded password is used as a default argument to 'connect_to_db'.,6,Semgrep Static Analysis,python.lang.security.audit.hardcoded-password-default-argument.hardcoded-password-default-argument
+Auth-01,Gemini,Auth,4,auth_login,Vulnerable,Hardcoded Secret,Medium,A secret is hard-coded in the application.,48,Semgrep Static Analysis,python.pyjwt.python-pyjwt-hardcoded-secret.python-pyjwt-hardcoded-secret
+Secrets-01,DeepSeek,Secrets,10,secrets_database,Vulnerable,Hardcoded Secret,Medium,A secret is hard-coded in the application.,201,Semgrep Static Analysis,python.sqlalchemy.python-sqlalchemy-hardcoded-secret.python-sqlalchemy-hardcoded-secret
+API-01,ChatGPT,API,7,api_endpoint,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,2,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-03,ChatGPT,API,9,api_upload,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,7,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-01,Claude,API,7,api_endpoint,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,2,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-01,DeepSeek,API,7,api_endpoint,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,3,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-01,Gemini,API,7,api_endpoint,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,20,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-03,Gemini,API,9,api_upload,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,17,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-01,Grok,API,7,api_endpoint,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,66,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-02,Grok,API,8,api_cors,Vulnerable,Missing CSRF Protection,Low,A CSRF middleware was not detected in your express application.,3,Semgrep Static Analysis,javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+API-02,ChatGPT,API,8,CORS configuration,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+API-05,Grok,API,19,api_security_headers,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+API-06,ChatGPT,API,20,api_csrf,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+API-06,Claude,API,20,api_csrf,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+API-06,DeepSeek,API,20,api_csrf,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+API-06,Grok,API,20,api_csrf,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-01,Claude,Auth,4,Login Function,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-01,DeepSeek,Auth,4,Login Function,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-02,ChatGPT,Auth,5,Generate JWT tokens,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-02,Claude,Auth,5,Generate JWT tokens,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-02,DeepSeek,Auth,5,Generate JWT tokens,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-02,Grok,Auth,5,Generate JWT tokens,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-03,ChatGPT,Auth,6,Register new user email and password,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-03,Claude,Auth,6,Register new user email and password,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-03,DeepSeek,Auth,6,Register new user email and password,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-03,Gemini,Auth,6,Register new user email and password,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-04,Grok,Auth,14,auth_access_control,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-05,Gemini,Auth,15,auth_admin_role,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-05,Grok,Auth,15,auth_admin_role,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-06,ChatGPT,Auth,16,auth_password_hashing,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-06,Claude,Auth,16,auth_password_hashing,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-06,DeepSeek,Auth,16,auth_password_hashing,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-06,Gemini,Auth,16,auth_password_hashing,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-06,Grok,Auth,16,auth_password_hashing,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-07,Claude,Auth,17,auth_token_storage,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Auth-07,Grok,Auth,17,auth_token_storage,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-01,ChatGPT,Novel,13,React Server Component,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-01,Claude,Novel,13,React Server Component,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-01,DeepSeek,Novel,13,React Server Component,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-01,Gemini,Novel,13,React Server Component,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-01,Grok,Novel,13,React Server Component,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-03,ChatGPT,Novel,22,Binary-Parser_RCE,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-03,Claude,Novel,22,Binary-Parser_RCE,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-03,DeepSeek,Novel,22,Binary-Parser_RCE,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-03,Gemini,Novel,22,Binary-Parser_RCE,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-03,Grok,Novel,22,Binary-Parser_RCE,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-04,DeepSeek,Novel,23,fastify_stream_dos,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-04,Gemini,Novel,23,fastify_stream_dos,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-05,Claude,Novel,24,bentoml_path_stealer,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-05,Gemini,Novel,24,bentoml_path_stealer,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Novel-05,Grok,Novel,24,bentoml_path_stealer,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-01,ChatGPT,Secrets,10,Connect to the database,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-01,Claude,Secrets,10,Connect to the database,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-01,Gemini,Secrets,10,Connect to the database,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-02,ChatGPT,Secrets,11,API calling,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-02,Claude,Secrets,11,API calling,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-02,DeepSeek,Secrets,11,API calling,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-02,Gemini,Secrets,11,API calling,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-02,Grok,Secrets,11,API calling,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-03,ChatGPT,Secrets,12,Upload to AWS S3,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-03,Claude,Secrets,12,Upload to AWS S4,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-03,DeepSeek,Secrets,12,Upload to AWS S6,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-03,Gemini,Secrets,12,Upload to AWS S5,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+Secrets-03,Grok,Secrets,12,Upload to AWS S7,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-01,ChatGPT,XSS,1,Comment Display,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-01,Claude,XSS,1,Comment Display,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-01,DeepSeek,XSS,1,Comment Display,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-01,Gemini,XSS,1,Comment Display,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-01,Grok,XSS,1,Comment Display,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-03,ChatGPT,XSS,3,Display Format Input,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-03,Claude,XSS,3,Display Format Input,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-03,DeepSeek,XSS,3,Display Format Input,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-03,Gemini,XSS,3,Display Format Input,Secure,N/A,N/A,N/A,N/A,N/A,N/A
+XSS-03,Grok,XSS,3,Display Format Input,Secure,N/A,N/A,N/A,N/A,N/A,N/A
